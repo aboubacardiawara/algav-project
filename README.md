@@ -6,6 +6,15 @@ to do
 
 ...
 
+# 2. Usage
+## 2.1 Compile
+At the root of the project, execute:
+```sh
+algav-project$ make
+```
+## 
 
 # Utiles
 - [ecnonce (moodle)](https://moodle-sciences-22.sorbonne-universite.fr/pluginfile.php/463253/mod_resource/content/1/devoir_prog_AlgAv.pdf)
+
+
