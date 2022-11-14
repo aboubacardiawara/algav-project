@@ -31,10 +31,3 @@ vector<bool> decomposition(int n) {
     }
     return v;
 }
-
-int main()
-{
-    vector<bool> v = decomposition(38);
-    display_vector(v);
-    return 0;
-}
