@@ -20,4 +20,13 @@ void display_vector(const vector<bool> &v);
  */
 vector<bool> decomposition(int n);
 
+/**
+ * @brief complete (with false) or tronc the giving list.
+ * 
+ * @param v vector to complete
+ * @param n the size of the final vector.
+ * @return vector<bool> of size n
+ */
+vector<bool> completion(vector<bool> v, int n);
+
 #endif
