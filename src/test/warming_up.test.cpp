@@ -4,9 +4,28 @@
 
 using namespace std;
 
-int main() {
+void testDecomposition()
+{
 	vector<bool> v = decomposition(38);
 	vector<bool> expected = {false, true, true, false, false, true};
 	assert(v == expected && "testDecomposition");
+}
+
+void testCompletion()
+{
+	// tronc
+	vector<bool> v1 = {false, true, true, false, false, true};
+	vector<bool> expected1 = {false, true, true, false, false, true};
+	assert(completion(v1, 4) == expected);
+
+	// expand
+	vector<bool> v2 = {false, true, true, false, false, true};
+	vector<bool> expected2 = {false, true, true, false, false, true, false, false};
+	assert(completion(v2, 8) == expected);
+}
+
+int main() {
+	testDecomposition();
+	testCompletion();
 	return 0;
 }
