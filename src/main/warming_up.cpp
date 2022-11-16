@@ -31,3 +31,24 @@ vector<bool> decomposition(int n) {
     }
     return v;
 }
+
+/**
+ * @brief complete (with false) or tronc the giving list.
+ * 
+ * @param v vector to complete
+ * @param n the size of the final vector.
+ * @return vector<bool> of size n
+ */
+vector<bool> completion(vector<bool> v, int n)
+{
+    if (n > v.size()) {
+        int difference = n - v.size();
+        while (difference--)
+            v.push_back(false);
+    } else {
+        int difference = v.size() - n;
+        while (difference--)
+            v.pop_back();
+    }
+    return v;
+}
