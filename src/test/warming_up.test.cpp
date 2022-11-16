@@ -24,8 +24,17 @@ void testCompletion()
 	assert(completion(v2, 8) == expected2 && "should complete with 'false'");
 }
 
+void testTable()
+{
+	int x = 38, n=4;
+	vector<bool> expected = {false, true, true, false};
+	assert(table(x, n) == expected && "test table");
+
+}
+
 int main() {
 	testDecomposition();
 	testCompletion();
+	testTable();
 	return 0;
 }

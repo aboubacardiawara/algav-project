@@ -52,3 +52,17 @@ vector<bool> completion(vector<bool> v, int n)
     }
     return v;
 }
+
+
+/**
+ * @brief decompose the integer x in base 2 then
+ * make it size equals to n
+ * 
+ * @param x 
+ * @param n 
+ * @return vector<bool> 
+ */
+vector<bool> table(int x, int n)
+{
+    return completion(decomposition(x), n);
+}
