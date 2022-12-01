@@ -8,8 +8,8 @@ warming_up:
 	make warming_up.out
 	make warming_up.test.out
 
-warming_up.out: src/main/warming_up.cpp
+warming_up.out: src/warming_up/warming_up.cpp
 	$(CC) -o $@ $^ $(FLAGS)
 
-warming_up.test.out: src/test/warming_up.test.cpp src/main/warming_up.cpp
+warming_up.test.out: src/tests/warming_up.test.cpp src/warming_up/warming_up.cpp
 	$(CC) -o $@ $^ $(FLAGS)
