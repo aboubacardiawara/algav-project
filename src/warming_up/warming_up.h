@@ -4,6 +4,8 @@
 #include <vector>
 #include <algorithm>
 #include <iterator>
+#include "../arithmetic_lib/include/NTL/ZZ.h"
+
 using namespace std;
 
 /**
@@ -18,6 +20,7 @@ void display_vector(const vector<bool> &v);
  * Decompose l'entier n en une liste de bits.
  * Les bits de poids les plus faibles sont en tête.
  */
+vector<bool> decomposition(NTL::ZZ n);
 vector<bool> decomposition(int n);
 
 /**
@@ -27,6 +30,7 @@ vector<bool> decomposition(int n);
  * @param n the size of the final vector.
  * @return vector<bool> of size n
  */
+vector<bool> completion(vector<bool> v, NTL::ZZ n);
 vector<bool> completion(vector<bool> v, int n);
 
 /**
@@ -37,6 +41,7 @@ vector<bool> completion(vector<bool> v, int n);
  * @param n
  * @return vector<bool>
  */
+vector<bool> table(NTL::ZZ x, NTL::ZZ n);
 vector<bool> table(int x, int n);
 
 #endif

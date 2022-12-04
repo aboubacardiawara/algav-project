@@ -19,16 +19,20 @@ void display_vector(const vector<bool> &v)
  * Decompose l'entier n en une liste de bits.
  * Les bits de poids les plus faibles sont en tête.
  */
-vector<bool> decomposition(int n)
+vector<bool> decomposition(NTL::ZZ n)
 {
     vector<bool> v;
-    int quotient = n, reste;
+    NTL::ZZ quotient = n, reste;
     while (quotient != 0) {
         reste = quotient % 2;
         quotient /= 2;
         v.push_back(reste == 1 ? true : false);
     }
     return v;
+}
+vector<bool> decomposition(int n)
+{
+    return decomposition(NTL::ZZ(n));
 }
 
 /**
@@ -38,18 +42,29 @@ vector<bool> decomposition(int n)
  * @param n the size of the final vector.
  * @return vector<bool> of size n
  */
-vector<bool> completion(vector<bool> v, int n)
+vector<bool> completion(vector<bool> v, NTL::ZZ n)
 {
     if (n > v.size()) {
-        int difference = n - v.size();
-        while (difference--)
+        NTL::ZZ difference = n - v.size();
+        // Only Because NTL does not convert automatically to bool
+        while (difference != 0) {
+            difference--;
             v.push_back(false);
+        }
+
     } else {
-        int difference = v.size() - n;
-        while (difference--)
+        NTL::ZZ difference = v.size() - n;
+        // Only Because NTL does not convert automatically to bool
+        while (difference != 0) {
+            difference--;
             v.pop_back();
+        }
     }
     return v;
+}
+vector<bool> completion(vector<bool> v, int n)
+{
+    return completion(v, NTL::ZZ(n));
 }
 
 /**
@@ -60,6 +75,10 @@ vector<bool> completion(vector<bool> v, int n)
  * @param n
  * @return vector<bool>
  */
+vector<bool> table(NTL::ZZ x, NTL::ZZ n)
+{
+    return completion(decomposition(x), n);
+}
 vector<bool> table(int x, int n)
 {
     return completion(decomposition(x), n);
