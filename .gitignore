@@ -1,4 +1,6 @@
 .vscode
+src/arithmetic_lib
+library/ntl-11.5.1
 
 # Prerequisites
 *.d
