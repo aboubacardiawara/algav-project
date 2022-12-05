@@ -12,7 +12,9 @@ At the root of the project, execute:
 ```sh
 algav-project$ make
 ```
-## 
+## TODO
+
+- [ ] Using Array instade of vector (src/warming_up/warming_up.h)
 
 # Utiles
 - [ecnonce (moodle)](https://moodle-sciences-22.sorbonne-universite.fr/pluginfile.php/463253/mod_resource/content/1/devoir_prog_AlgAv.pdf)
