@@ -81,5 +81,5 @@ vector<bool> table(NTL::ZZ x, NTL::ZZ n)
 }
 vector<bool> table(int x, int n)
 {
-    return completion(decomposition(x), n);
+    return table(NTL::ZZ(x), NTL::ZZ(n));
 }
