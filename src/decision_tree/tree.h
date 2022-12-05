@@ -1,53 +1,28 @@
-#pragma once // Même effet que IFNDEF X DEFINE X
+#pragma once
 
-#include <string>
+#include "../decision_tree/treeClasses.h"
+#include "../arithmetic_lib/include/NTL/ZZ.h"
+
 using namespace std;
-
-/*
-    A definir.
-    Je veux qu'il soit assez generique.
-    Comme ça s'il y'a lieu d'enrichir e reste du code sera moins touché.
-  */
-class Data
-{
-
-private:
-    // TODO - Fields
-public:
-    // TODO - PublicApi
-    Data(/* Fields */);
-    ~Data(); // Does nothing
-private:
-    //? - PrivateHelpers Funcs
-};
-
-class Node
-{
-private:
-    Node *left;
-    Node *right;
-    Data *value;
-
-public:
-    // TODO - PublicApi
-    Node(Data *value);
-    ~Node(); // TODO We delete recursivly childs nodes
-
-private:
-    //? - PrivateHelpers Funcs
-};
 
 class BinaryDecisionTree
 {
 private:
-    // - Fields
-    Node root; // Not a pointer because root live and die with tree
+    AbstractNode *_root = NULL;
 
 public:
-    BinaryDecisionTree(/* Fields */);
-    ~BinaryDecisionTree(); // Does nothing
-    void exportToDotFile(const string &filename); // TODO write a valid .dot file of the tree
-    // TODO - PublicApi
+    BinaryDecisionTree(const vector<bool> &truthTable) { this->_buildTree(truthTable); }
+    BinaryDecisionTree(const NTL::ZZ &number, const NTL::ZZ &size) { this->_buildTree(number, size); }
+    BinaryDecisionTree(const int &number, const int &size) { this->_buildTree(number, size); }
+    ~BinaryDecisionTree() { delete this->_root; }
+
+    void exportToDotFile(const string &filename); //! Todo
+    const string &getLukasWord();
+    void BasicCompression();
+
 private:
-    //? - PrivateHelpers Funcs
+    void _buildTree(const vector<bool> &truthTable);
+    void _buildTree(const NTL::ZZ &number, const NTL::ZZ &size);
+    void _buildTree(const int &number, const int &size);
+    AbstractNode *_buildTree_aux(const vector<bool> &truthTable);
 };
