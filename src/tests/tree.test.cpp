@@ -1,9 +1,8 @@
 #include "../decision_tree/tree.h"
-#include <format>
 
 void test_tree_build()
 {
-    BinaryDecisionTree test(NTL::ZZ(3083208324893420823), NTL::ZZ(62));
+    BinaryDecisionTree test(38, 8);
     test.BasicCompression();
     cout << test.getLukasWord() << endl;
 }
