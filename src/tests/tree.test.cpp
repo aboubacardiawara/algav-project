@@ -1,4 +1,5 @@
 #include "../decision_tree/tree.h"
+#include <assert.h>
 
 void test_tree_build()
 {

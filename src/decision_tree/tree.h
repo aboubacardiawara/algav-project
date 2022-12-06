@@ -2,7 +2,7 @@
 
 #include "../decision_tree/treeClasses.h"
 #include "../arithmetic_lib/include/NTL/ZZ.h"
-
+#include <vector>
 using namespace std;
 
 class BinaryDecisionTree

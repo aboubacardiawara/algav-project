@@ -1,6 +1,7 @@
 #include "tree.h"
 #include <iostream>
 #include <fstream>
+#include <assert.h>
 #include "../warming_up/warming_up.h"
 
 /**
