@@ -22,6 +22,13 @@ void test_lukaword_computation()
     assert(tree2.getLukasWord() != expected_luka_word && "test luka for table of 2");
 }
 
+void test_compression() {
+    BinaryDecisionTree tree(38, 8);
+    // size before compression
+
+    // size after compression
+}
+
 int main(int argc, const char **argv)
 {
     //test_tree_build();
