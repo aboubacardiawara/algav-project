@@ -15,7 +15,7 @@ void BinaryDecisionTree::exportToDotFile(const string &filename)
     assert(this->_root != NULL);
     ofstream myfile;
     myfile.open(filename + ".dot", ios::out | ios::trunc | ios::binary);
-    myfile << "digraph{\n"+ this->_root->toDotString() +"\n}";
+    myfile << "digraph{\n" + this->_root->toDotString() + "\n}";
     myfile.close();
 }
 
@@ -101,8 +101,6 @@ AbstractNode *BinaryDecisionTree::_buildTree_aux(const vector<bool> &truthTable)
  */
 void BinaryDecisionTree::BasicCompression()
 {
-    cout << "Before Compression := " << this->_root->stringOfAddr() << endl;
     this->_root = this->_root->basicCompression(&_dico);
-    cout << "After Compression := " << this->_root->stringOfAddr() << endl;
     this->_root->calculateLukasWord();
 }

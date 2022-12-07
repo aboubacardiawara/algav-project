@@ -1,6 +1,40 @@
 #include "treeClasses.h"
 
 /**
+ * It returns a string that represents the node in the DOT language
+ *
+ * @return The string representation containing the address and label of the node.
+ */
+const string AbstractNode::toDotString() const
+{
+    return stringOfAddr() + " [label=\"" + this->getLabel() + "\" ] \n";
+}
+
+/**
+ * It returns a string that represents the node and its children in the DOT language
+ *
+ * @return The string representation of the node in dot format.
+ */
+const string InternalNode::toDotString() const
+{
+    string leftConnection = this->stringOfAddr() + " -> " + this->_left->stringOfAddr() + "\n";
+    string rightConnection = this->stringOfAddr() + " -> " + this->_right->stringOfAddr() + "\n";
+    return AbstractNode::toDotString() + this->_left->toDotString() + this->_right->toDotString()
+            + leftConnection + rightConnection;
+}
+
+/**
+ * @return A string that contains the address of the object.
+ */
+const string AbstractNode::stringOfAddr() const
+{
+    std::ostringstream address;
+    address << (void const *)this;
+    std::string strPtr = address.str();
+    return "Ptr" + strPtr;
+}
+
+/**
  * This function returns the LukasWord of the AbstractNode.
  *
  * @return The LukasWord of the node.
@@ -137,14 +171,6 @@ InternalNode::~InternalNode()
 {
     delete this->_left;
     delete this->_right;
-}
-
-const string InternalNode::toDotString() const
-{
-    string leftConnection = this->stringOfAddr() + " -> " + this->_left->stringOfAddr() + "\n";
-    string rightConnection = this->stringOfAddr() + " -> " + this->_right->stringOfAddr() + "\n";
-    return AbstractNode::toDotString() + this->_left->toDotString() + this->_right->toDotString()
-            + leftConnection + rightConnection;
 }
 
 /**

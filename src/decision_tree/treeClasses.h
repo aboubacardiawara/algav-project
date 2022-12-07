@@ -26,14 +26,8 @@ public:
     const string &getLabel() const { return this->_label; }
     virtual const string &calculateLukasWord() = 0;
 
-    const string stringOfAddr() const
-    {
-        std::ostringstream address;
-        address << (void const*)this;
-        std::string strPtr = address.str();
-        return "Ptr"+strPtr;
-    }
-    virtual const string toDotString() const { return stringOfAddr() + " [label=\"" + this->getLabel() + "\" ] \n"; }
+    const string stringOfAddr() const;
+    virtual const string toDotString() const;
     virtual AbstractNode *basicCompression(RefDictionary *const hashMap);
 };
 

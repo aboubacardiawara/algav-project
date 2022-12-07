@@ -21,15 +21,7 @@ void test_lukaword_computation()
 void test_exportation()
 {
     BinaryDecisionTree tree(38, 8);
-    tree.BasicCompression();
-    auto begin = tree.getDico().begin();
-    auto end = tree.getDico().end();
-    cout << tree.getDico().size() << endl;
-    for (; begin != end; ++begin) {
-        cout << begin->second->stringOfAddr() << endl;
-        cout << begin->second->getLabel()  << " "<< begin->second->getLukasWord() << endl;
-    }
-    
+    tree.BasicCompression();    
     tree.exportToDotFile("Test");
 }
 
