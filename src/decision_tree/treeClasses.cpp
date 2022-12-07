@@ -93,7 +93,7 @@ const string LeafNode::toDotString() const
  */
 const string &LeafNode::calculateLukasWord()
 {
-    return setLukasWord("(" + valueToString() + ")");
+    return setLukasWord(valueToString());
 }
 
 /**
@@ -130,7 +130,7 @@ const string InternalNode::toDotString() const
  */
 const string &InternalNode::calculateLukasWord()
 {
-    return setLukasWord("(" + _left->calculateLukasWord() + _right->calculateLukasWord() + ")");
+    return setLukasWord("(" + _left->calculateLukasWord() + ")" + "(" +_right->calculateLukasWord() + ")");
 }
 
 /**
