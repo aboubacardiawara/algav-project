@@ -1,7 +1,8 @@
 #include "tree.h"
 #include <iostream>
 #include <fstream>
-#include <assert.h>
+#include <cassert>
+#include <cmath>
 #include "../warming_up/warming_up.h"
 
 /**
@@ -13,8 +14,8 @@ void BinaryDecisionTree::exportToDotFile(const string &filename)
 {
     assert(this->_root != NULL);
     ofstream myfile;
-    myfile.open(filename + ".dot", ios::out | ios::app | ios::binary);
-    myfile << this->_root->toDotString();
+    myfile.open(filename + ".dot", ios::out | ios::trunc | ios::binary);
+    myfile << "digraph{\n"+ this->_root->toDotString() +"\n}";
     myfile.close();
 }
 
@@ -76,8 +77,11 @@ void BinaryDecisionTree::_buildTree(const int &number, const int &size)
  */
 AbstractNode *BinaryDecisionTree::_buildTree_aux(const vector<bool> &truthTable)
 {
-    if (truthTable.size() == 1)
-        return new LeafNode(truthTable[0]);
+    if (truthTable.size() == 1) {
+        LeafNode *node = new LeafNode(truthTable[0]);
+        node->setLabel(node->valueToString());
+        return node;
+    }
 
     size_t middle = truthTable.size() / 2;
     vector<bool>::const_iterator middleIter = truthTable.cbegin();
@@ -86,7 +90,9 @@ AbstractNode *BinaryDecisionTree::_buildTree_aux(const vector<bool> &truthTable)
     vector<bool> leftHalf(truthTable.begin(), middleIter);
     vector<bool> rightHalf(middleIter, truthTable.end());
 
-    return new InternalNode(_buildTree_aux(leftHalf), _buildTree_aux(rightHalf));
+    AbstractNode *node = new InternalNode(_buildTree_aux(leftHalf), _buildTree_aux(rightHalf));
+    node->setLabel("x" + to_string((unsigned long long)log2(truthTable.size())));
+    return node;
 }
 
 /**
@@ -95,7 +101,8 @@ AbstractNode *BinaryDecisionTree::_buildTree_aux(const vector<bool> &truthTable)
  */
 void BinaryDecisionTree::BasicCompression()
 {
-    RefDictionary dico;
-    this->_root = this->_root->basicCompression(&dico);
+    cout << "Before Compression := " << this->_root->stringOfAddr() << endl;
+    this->_root = this->_root->basicCompression(&_dico);
+    cout << "After Compression := " << this->_root->stringOfAddr() << endl;
     this->_root->calculateLukasWord();
 }

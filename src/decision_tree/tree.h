@@ -9,6 +9,7 @@ class BinaryDecisionTree
 {
 private:
     AbstractNode *_root = NULL;
+    RefDictionary _dico;
 
 public:
     BinaryDecisionTree(const vector<bool> &truthTable) { this->_buildTree(truthTable); }
@@ -18,6 +19,7 @@ public:
 
     void exportToDotFile(const string &filename); //! Todo
     const string &getLukasWord();
+    const RefDictionary &getDico() const { return this->_dico; }
     void BasicCompression();
 
 private:

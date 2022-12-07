@@ -39,6 +39,28 @@ AbstractNode *AbstractNode::basicCompression(RefDictionary *const hashMap)
     hashMap->insert({ getLukasWord(), this });
     return this;
 }
+/**
+ * Compress a InternalNode
+ *
+ * @param hashMap A hash map that maps a Lukas word to a node.
+ *
+ * @return The node that is being returned is the node that is being compressed.
+ */
+AbstractNode *InternalNode::basicCompression(RefDictionary *const hashMap)
+{
+    AbstractNode *leftResult = this->_left->basicCompression(hashMap);
+    AbstractNode *rightResult = this->_right->basicCompression(hashMap);
+    InternalNode *result = (InternalNode *)AbstractNode::basicCompression(hashMap);
+
+    result->_left = leftResult;
+    result->_right = rightResult;
+    return result;
+}
+
+AbstractNode *LeafNode::basicCompression(RefDictionary *const hashMap)
+{
+    return AbstractNode::basicCompression(hashMap);
+}
 
 /**
  * `LeafNode` is a constructor that takes a `bool` and sets the `_value` member variable to that
@@ -83,7 +105,7 @@ const string LeafNode::valueToString() const
 
 const string LeafNode::toDotString() const
 {
-    return ""; //!Todo
+    return AbstractNode::toDotString();
 }
 
 /**
@@ -119,8 +141,11 @@ InternalNode::~InternalNode()
 
 const string InternalNode::toDotString() const
 {
-    return "";
-} //! Todo
+    string leftConnection = this->stringOfAddr() + " -> " + this->_left->stringOfAddr() + "\n";
+    string rightConnection = this->stringOfAddr() + " -> " + this->_right->stringOfAddr() + "\n";
+    return AbstractNode::toDotString() + this->_left->toDotString() + this->_right->toDotString()
+            + leftConnection + rightConnection;
+}
 
 /**
  * The Lukasiewicz word of an internal node is the concatenation of the Lukasiewicz words of its
@@ -130,19 +155,6 @@ const string InternalNode::toDotString() const
  */
 const string &InternalNode::calculateLukasWord()
 {
-    return setLukasWord("(" + _left->calculateLukasWord() + ")" + "(" +_right->calculateLukasWord() + ")");
-}
-
-/**
- * Compress a InternalNode
- *
- * @param hashMap A hash map that maps a Lukas word to a node.
- *
- * @return The node that is being returned is the node that is being compressed.
- */
-AbstractNode *InternalNode::basicCompression(RefDictionary *const hashMap)
-{
-    this->_left = this->_left->basicCompression(hashMap);
-    this->_right = this->_right->basicCompression(hashMap);
-    return AbstractNode::basicCompression(hashMap);
+    return setLukasWord(getLabel() + "(" + _left->calculateLukasWord() + ")" + "("
+                        + _right->calculateLukasWord() + ")");
 }

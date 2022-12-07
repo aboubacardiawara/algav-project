@@ -2,6 +2,9 @@
 
 #include <string>
 #include <unordered_map>
+#include <sstream>
+
+#include <iostream> /* To Remove */
 
 using namespace std;
 
@@ -12,15 +15,26 @@ class AbstractNode
 {
 private:
     string _LukasWord = "";
+    string _label = "";
 
 public:
     AbstractNode() { }
     virtual ~AbstractNode() { }
     const string &getLukasWord() const;
     const string &setLukasWord(const string &value);
+    void setLabel(const string &value) { this->_label = value; }
+    const string &getLabel() const { return this->_label; }
     virtual const string &calculateLukasWord() = 0;
-    virtual const string toDotString() const = 0;
-    AbstractNode *basicCompression(RefDictionary *const hashMap);
+
+    const string stringOfAddr() const
+    {
+        std::ostringstream address;
+        address << (void const*)this;
+        std::string strPtr = address.str();
+        return "Ptr"+strPtr;
+    }
+    virtual const string toDotString() const { return stringOfAddr() + " [label=\"" + this->getLabel() + "\" ] \n"; }
+    virtual AbstractNode *basicCompression(RefDictionary *const hashMap);
 };
 
 class LeafNode : public AbstractNode
@@ -35,12 +49,9 @@ public:
     void setValue(const bool &value);
     const string valueToString() const;
 
-    const string toDotString() const override; //! Todo
+    const string toDotString() const override ; //! Todo
     const string &calculateLukasWord() override;
-    AbstractNode *basicCompression(RefDictionary *const hashMap)
-    {
-        return AbstractNode::basicCompression(hashMap);
-    }
+    AbstractNode *basicCompression(RefDictionary *const hashMap) override;
 
 private:
     //? - PrivateHelpers Funcs
@@ -57,7 +68,7 @@ public:
     ~InternalNode() override;
     const string toDotString() const override; //! Todo
     const string &calculateLukasWord() override;
-    AbstractNode *basicCompression(RefDictionary *const hashMap);
+    AbstractNode *basicCompression(RefDictionary *const hashMap) override;
 
 private:
     //? - PrivateHelpers Funcs
