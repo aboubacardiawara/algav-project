@@ -95,10 +95,6 @@ AbstractNode *BinaryDecisionTree::_buildTree_aux(const vector<bool> &truthTable)
     return node;
 }
 
-/**
- * It compresses the tree by replacing all the nodes that have the same left and right child by a
- * single node
- */
 void BinaryDecisionTree::BasicCompression()
 {
     this->_root = this->_root->basicCompression(&_dico);

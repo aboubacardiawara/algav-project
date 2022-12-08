@@ -17,8 +17,8 @@ const string AbstractNode::toDotString() const
  */
 const string InternalNode::toDotString() const
 {
-    string leftConnection = this->stringOfAddr() + " -> " + this->_left->stringOfAddr() + "\n";
-    string rightConnection = this->stringOfAddr() + " -> " + this->_right->stringOfAddr() + "\n";
+    string leftConnection = this->stringOfAddr() + " -> " + this->_left->stringOfAddr() + " [color=\"green\"]\n";
+    string rightConnection = this->stringOfAddr() + " -> " + this->_right->stringOfAddr() + " [color=\"red\"]\n";
     return AbstractNode::toDotString() + this->_left->toDotString() + this->_right->toDotString()
             + leftConnection + rightConnection;
 }
