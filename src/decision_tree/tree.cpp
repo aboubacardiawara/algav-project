@@ -104,3 +104,12 @@ void BinaryDecisionTree::BasicCompression()
     this->_root = this->_root->basicCompression(&_dico);
     this->_root->calculateLukasWord();
 }
+
+BinaryDecisionTree::~BinaryDecisionTree()
+{
+    if (_dico.empty())
+        delete this->_root;
+    else
+        for (RefDictionary::iterator it = _dico.begin(); it != _dico.end(); ++it)
+            free(it->second);
+}

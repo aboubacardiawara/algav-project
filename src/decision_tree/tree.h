@@ -15,11 +15,7 @@ public:
     BinaryDecisionTree(const vector<bool> &truthTable) { this->_buildTree(truthTable); }
     BinaryDecisionTree(const NTL::ZZ &number, const NTL::ZZ &size) { this->_buildTree(number, size); }
     BinaryDecisionTree(const int &number, const int &size) { this->_buildTree(number, size); }
-    ~BinaryDecisionTree()
-    {
-        if (_dico.empty())
-            delete this->_root;
-    }
+    ~BinaryDecisionTree();
 
     void exportToDotFile(const string &filename); //! Todo
     const string &getLukasWord();
