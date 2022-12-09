@@ -14,8 +14,8 @@ algav-project$ make
 ```
 ## TODO
 
-- [ ] Using Array instade of vector (src/warming_up/warming_up.h) (Important)
-- [ ] Using String_Linked_List instad of concatenation (For .dot conversion and lukas building)
+- [ ] Using Array instead of vector (src/warming_up/warming_up.h) (Important)
+- [ ] Using String_Linked_List (with cache) instad of concatenation (For .dot conversion and lukas building)
 
 # Utiles
 - [ecnonce (moodle)](https://moodle-sciences-22.sorbonne-universite.fr/pluginfile.php/463253/mod_resource/content/1/devoir_prog_AlgAv.pdf)
