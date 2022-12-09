@@ -3,6 +3,7 @@
 #include <fstream>
 #include <cassert>
 #include <cmath>
+#include <set>
 #include "../warming_up/warming_up.h"
 
 /**
@@ -107,9 +108,14 @@ void BinaryDecisionTree::AdvencedCompression()
 
 BinaryDecisionTree::~BinaryDecisionTree()
 {
+
     if (_dico.empty())
         delete this->_root;
-    else
+    else {
+        set<AbstractNode *> ptrToFree;
         for (RefDictionary::iterator it = _dico.begin(); it != _dico.end(); ++it)
-            free(it->second);
+            ptrToFree.insert(it->second);
+        for (set<AbstractNode *>::iterator it = ptrToFree.begin(); it != ptrToFree.end(); ++it)
+            free(*it);
+    }
 }

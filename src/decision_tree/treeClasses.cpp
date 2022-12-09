@@ -70,8 +70,9 @@ AbstractNode *AbstractNode::basicCompression(RefDictionary *const hashMap)
     /* Merging + Terminal Rules */
     RefDictionary::iterator sameNode = hashMap->find(getLukasWord());
     if (sameNode != hashMap->end()) {
-        if (this != sameNode->second)
+        if (this != sameNode->second) {
             free(this);
+        }
         return sameNode->second;
     }
     hashMap->insert({ getLukasWord(), this });
@@ -104,15 +105,15 @@ AbstractNode *InternalNode::advencedCompression(RefDictionary *const hashMap)
 {
     AbstractNode *leftResult = this->_left->advencedCompression(hashMap);
     AbstractNode *rightResult = this->_right->advencedCompression(hashMap);
-    InternalNode *result = (InternalNode *)AbstractNode::advencedCompression(hashMap);
 
-    result->_left = leftResult;
-    result->_right = rightResult;
     if (leftResult == rightResult) { /* Deletion Rule */
-        hashMap->at(result->getLukasWord()) = leftResult;
-        free(result);
+        free(this);
         return leftResult;
     }
+
+    InternalNode *result = (InternalNode *)AbstractNode::advencedCompression(hashMap);
+    result->_left = leftResult;
+    result->_right = rightResult;
     return result;
 }
 

@@ -44,4 +44,5 @@ vector<bool> completion(vector<bool> v, int n);
 vector<bool> table(NTL::ZZ x, NTL::ZZ n);
 vector<bool> table(int x, int n);
 
+
 #endif

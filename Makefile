@@ -27,4 +27,4 @@ tree.test.out: src/tests/tree.test.cpp src/decision_tree/tree.cpp src/warming_up
 	$(CC) -o $@ $^ $(FLAGS)
 
 clean:
-	rm *.out
+	rm *.out *.dot *.jpg
