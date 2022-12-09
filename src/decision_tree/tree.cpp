@@ -98,7 +98,11 @@ AbstractNode *BinaryDecisionTree::_buildTree_aux(const vector<bool> &truthTable)
 void BinaryDecisionTree::BasicCompression()
 {
     this->_root = this->_root->basicCompression(&_dico);
-    this->_root->calculateLukasWord();
+}
+
+void BinaryDecisionTree::AdvencedCompression()
+{
+    this->_root = this->_root->advencedCompression(&_dico);
 }
 
 BinaryDecisionTree::~BinaryDecisionTree()

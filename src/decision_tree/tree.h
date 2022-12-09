@@ -17,10 +17,11 @@ public:
     BinaryDecisionTree(const int &number, const int &size) { this->_buildTree(number, size); }
     ~BinaryDecisionTree();
 
-    void exportToDotFile(const string &filename); //! Todo
+    void exportToDotFile(const string &filename);
     const string &getLukasWord();
     const RefDictionary &getDico() const { return this->_dico; }
     void BasicCompression();
+    void AdvencedCompression();
 
 private:
     void _buildTree(const vector<bool> &truthTable);

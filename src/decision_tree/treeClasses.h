@@ -29,6 +29,7 @@ public:
     const string stringOfAddr() const;
     virtual const string toDotString() const;
     virtual AbstractNode *basicCompression(RefDictionary *const hashMap);
+    virtual AbstractNode *advencedCompression(RefDictionary *const hashMap);
 };
 
 class LeafNode : public AbstractNode
@@ -42,10 +43,8 @@ public:
     const bool &getValue() const;
     void setValue(const bool &value);
     const string valueToString() const;
-
-    const string toDotString() const override ; //! Todo
+    const string toDotString() const override;
     const string &calculateLukasWord() override;
-    AbstractNode *basicCompression(RefDictionary *const hashMap) override;
 
 private:
     //? - PrivateHelpers Funcs
@@ -60,9 +59,10 @@ private:
 public:
     InternalNode(AbstractNode *left, AbstractNode *right);
     ~InternalNode() override;
-    const string toDotString() const override; //! Todo
+    const string toDotString() const override;
     const string &calculateLukasWord() override;
     AbstractNode *basicCompression(RefDictionary *const hashMap) override;
+    AbstractNode *advencedCompression(RefDictionary *const hashMap) override;
 
 private:
     //? - PrivateHelpers Funcs

@@ -17,8 +17,10 @@ const string AbstractNode::toDotString() const
  */
 const string InternalNode::toDotString() const
 {
-    string leftConnection = this->stringOfAddr() + " -> " + this->_left->stringOfAddr() + " [color=\"green\"]\n";
-    string rightConnection = this->stringOfAddr() + " -> " + this->_right->stringOfAddr() + " [color=\"red\"]\n";
+    string leftConnection =
+            this->stringOfAddr() + " -> " + this->_left->stringOfAddr() + " [color=\"green\"]\n";
+    string rightConnection =
+            this->stringOfAddr() + " -> " + this->_right->stringOfAddr() + " [color=\"red\"]\n";
     return AbstractNode::toDotString() + this->_left->toDotString() + this->_right->toDotString()
             + leftConnection + rightConnection;
 }
@@ -65,9 +67,11 @@ const string &AbstractNode::setLukasWord(const string &value)
  */
 AbstractNode *AbstractNode::basicCompression(RefDictionary *const hashMap)
 {
+    /* Merging + Terminal Rules */
     RefDictionary::iterator sameNode = hashMap->find(getLukasWord());
     if (sameNode != hashMap->end()) {
-        free(this);
+        if (this != sameNode->second)
+            free(this);
         return sameNode->second;
     }
     hashMap->insert({ getLukasWord(), this });
@@ -91,9 +95,25 @@ AbstractNode *InternalNode::basicCompression(RefDictionary *const hashMap)
     return result;
 }
 
-AbstractNode *LeafNode::basicCompression(RefDictionary *const hashMap)
+AbstractNode *AbstractNode::advencedCompression(RefDictionary *const hashMap)
 {
     return AbstractNode::basicCompression(hashMap);
+}
+
+AbstractNode *InternalNode::advencedCompression(RefDictionary *const hashMap)
+{
+    AbstractNode *leftResult = this->_left->advencedCompression(hashMap);
+    AbstractNode *rightResult = this->_right->advencedCompression(hashMap);
+    InternalNode *result = (InternalNode *)AbstractNode::advencedCompression(hashMap);
+
+    result->_left = leftResult;
+    result->_right = rightResult;
+    if (leftResult == rightResult) { /* Deletion Rule */
+        hashMap->at(result->getLukasWord()) = leftResult;
+        free(result);
+        return leftResult;
+    }
+    return result;
 }
 
 /**

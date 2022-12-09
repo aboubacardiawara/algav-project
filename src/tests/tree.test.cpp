@@ -21,7 +21,7 @@ void test_lukaword_computation()
 void test_exportation()
 {
     BinaryDecisionTree tree(38, 8);
-    tree.BasicCompression();    
+    tree.AdvencedCompression(); 
     tree.exportToDotFile("Test");
 }
 
