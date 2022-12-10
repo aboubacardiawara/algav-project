@@ -1,6 +1,9 @@
 #include "../decision_tree/tree.h"
 #include <assert.h>
-
+#include <chrono>
+#include <string>
+#include <ctime>
+#include <unistd.h>
 void test_lukaword_computation()
 {
     BinaryDecisionTree tree(38, 8);
@@ -25,9 +28,29 @@ void test_exportation()
     tree.exportToDotFile("Test");
 }
 
-int main(int argc, const char **argv)
+void test_extensive_test(int nbVariable)
 {
-    test_lukaword_computation();
-    test_exportation();
+    int treeSize = pow(2, nbVariable);
+    NTL::ZZ nbPossibilities = NTL::power2_ZZ(treeSize);
+    set<int> treeSizes;
+
+    const clock_t time = clock();
+    for (NTL::ZZ i = NTL::ZZ::zero(); i < nbPossibilities; i++) {
+        cout << i << endl;
+        BinaryDecisionTree tree(i, NTL::ZZ(treeSize));
+        tree.AdvencedCompression();
+        treeSizes.insert(tree.getNbNodes());
+    }
+    float took = float(clock() - time) / CLOCKS_PER_SEC;
+    float average = NTL::conv<float>((NTL::ZZ(clock() - time) / nbPossibilities)) / CLOCKS_PER_SEC;
+    cout << "NbVariable: " << nbVariable << endl;
+    cout << "Total Calculations Took : " << took << " seconds" << endl;
+    cout << "Took : " << average << " seconds per Tree" << endl;
+    cout << "Found values : " << treeSizes.size() << endl;
+}
+
+int main()
+{
+    test_extensive_test(5);
     return 0;
 }

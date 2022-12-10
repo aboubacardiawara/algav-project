@@ -1,4 +1,5 @@
 #include "tree.h"
+#include <cstdlib>
 #include <iostream>
 #include <fstream>
 #include <cassert>
@@ -13,9 +14,10 @@
  */
 void BinaryDecisionTree::exportToDotFile(const string &filename)
 {
+    const string path = "visualisation/" + filename;
     assert(this->_root != NULL);
     ofstream myfile;
-    myfile.open(filename + ".dot", ios::out | ios::trunc | ios::binary);
+    myfile.open(path + ".dot", ios::out | ios::trunc | ios::binary);
 
     string toWrite;
     if (this->_dico.empty())
@@ -25,8 +27,10 @@ void BinaryDecisionTree::exportToDotFile(const string &filename)
             toWrite += (*it)->toDotString(false);
 
     myfile << "digraph{\n" + toWrite + "\n}";
-    cout << "This tree has : " << getNbNodes() << " nodes" << endl;
     myfile.close();
+
+    system(("dot -Tjpeg " + path + ".dot" + "> " + path + ".jpg").c_str());
+    system(("rm " + path + ".dot").c_str());
 }
 
 /**

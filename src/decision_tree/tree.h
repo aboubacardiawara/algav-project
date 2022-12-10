@@ -12,7 +12,7 @@ private:
     AbstractNode *_root = NULL;
     RefDictionary _dico;
     set<AbstractNode *> _uniqueNodes;
-    NTL::ZZ _nbNodes = NTL::ZZ(0);
+    unsigned long long _nbNodes = 0;
 
 public:
     BinaryDecisionTree(const vector<bool> &truthTable) { this->_buildTree(truthTable); }
@@ -25,7 +25,7 @@ public:
     const RefDictionary &getDico() const { return this->_dico; }
     void BasicCompression();
     void AdvencedCompression();
-    const NTL::ZZ &getNbNodes() const { return this->_nbNodes; }
+    const unsigned long long &getNbNodes() const { return this->_nbNodes; }
 
 private:
     void _buildTree(const vector<bool> &truthTable);
