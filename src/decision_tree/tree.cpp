@@ -16,7 +16,20 @@ void BinaryDecisionTree::exportToDotFile(const string &filename)
     assert(this->_root != NULL);
     ofstream myfile;
     myfile.open(filename + ".dot", ios::out | ios::trunc | ios::binary);
-    myfile << "digraph{\n" + this->_root->toDotString() + "\n}";
+
+    string toWrite;
+    if (this->_dico.empty())
+        toWrite = this->_root->toDotString();
+
+    else {
+        set<AbstractNode *> uniqueNodes;
+        for (RefDictionary::iterator it = _dico.begin(); it != _dico.end(); ++it) {
+            if (uniqueNodes.insert(it->second).second)
+                toWrite += it->second->toDotString(false);
+        }
+    }
+
+    myfile << "digraph{\n" + toWrite + "\n}";
     myfile.close();
 }
 
@@ -113,9 +126,9 @@ BinaryDecisionTree::~BinaryDecisionTree()
         delete this->_root;
     else {
         set<AbstractNode *> ptrToFree;
-        for (RefDictionary::iterator it = _dico.begin(); it != _dico.end(); ++it)
-            ptrToFree.insert(it->second);
-        for (set<AbstractNode *>::iterator it = ptrToFree.begin(); it != ptrToFree.end(); ++it)
-            free(*it);
+        for (RefDictionary::iterator it = _dico.begin(); it != _dico.end(); ++it) {
+            if (ptrToFree.insert(it->second).second)
+                free(it->second);
+        }
     }
 }

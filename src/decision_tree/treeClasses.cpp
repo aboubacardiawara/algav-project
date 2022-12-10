@@ -5,7 +5,7 @@
  *
  * @return The string representation containing the address and label of the node.
  */
-const string AbstractNode::toDotString() const
+const string AbstractNode::toDotString(const bool &)
 {
     return stringOfAddr() + " [label=\"" + this->getLabel() + "\" ] \n";
 }
@@ -15,14 +15,18 @@ const string AbstractNode::toDotString() const
  *
  * @return The string representation of the node in dot format.
  */
-const string InternalNode::toDotString() const
+const string InternalNode::toDotString(const bool &recursiveCall)
 {
     string leftConnection =
             this->stringOfAddr() + " -> " + this->_left->stringOfAddr() + " [color=\"green\"]\n";
-    string rightConnection =
-            this->stringOfAddr() + " -> " + this->_right->stringOfAddr() + " [color=\"red\"]\n";
-    return AbstractNode::toDotString() + this->_left->toDotString() + this->_right->toDotString()
-            + leftConnection + rightConnection;
+    string rightConnection = this->stringOfAddr() + " -> " + this->_right->stringOfAddr()
+            + " [style=\"dotted\" color=\"red\"]\n";
+
+    string recursiveStrCall = "";
+    if (recursiveCall)
+        recursiveStrCall = this->_left->toDotString() + this->_right->toDotString();
+
+    return AbstractNode::toDotString() + recursiveStrCall + leftConnection + rightConnection;
 }
 
 /**
@@ -103,8 +107,8 @@ AbstractNode *AbstractNode::advencedCompression(RefDictionary *const hashMap)
 
 AbstractNode *InternalNode::advencedCompression(RefDictionary *const hashMap)
 {
-    AbstractNode *leftResult = this->_left->advencedCompression(hashMap);
     AbstractNode *rightResult = this->_right->advencedCompression(hashMap);
+    AbstractNode *leftResult = this->_left->advencedCompression(hashMap);
 
     if (leftResult == rightResult) { /* Deletion Rule */
         free(this);
@@ -158,7 +162,7 @@ const string LeafNode::valueToString() const
     return this->_value ? "true" : "false";
 }
 
-const string LeafNode::toDotString() const
+const string LeafNode::toDotString(const bool &)
 {
     return AbstractNode::toDotString();
 }

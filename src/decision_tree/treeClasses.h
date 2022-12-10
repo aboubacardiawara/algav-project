@@ -27,7 +27,7 @@ public:
     virtual const string &calculateLukasWord() = 0;
 
     const string stringOfAddr() const;
-    virtual const string toDotString() const;
+    virtual const string toDotString(const bool &recusiveCall = true);
     virtual AbstractNode *basicCompression(RefDictionary *const hashMap);
     virtual AbstractNode *advencedCompression(RefDictionary *const hashMap);
 };
@@ -43,7 +43,7 @@ public:
     const bool &getValue() const;
     void setValue(const bool &value);
     const string valueToString() const;
-    const string toDotString() const override;
+    const string toDotString(const bool &recursiveCall = true) override;
     const string &calculateLukasWord() override;
 
 private:
@@ -59,7 +59,7 @@ private:
 public:
     InternalNode(AbstractNode *left, AbstractNode *right);
     ~InternalNode() override;
-    const string toDotString() const override;
+    const string toDotString(const bool &recusiveCall = true) override;
     const string &calculateLukasWord() override;
     AbstractNode *basicCompression(RefDictionary *const hashMap) override;
     AbstractNode *advencedCompression(RefDictionary *const hashMap) override;

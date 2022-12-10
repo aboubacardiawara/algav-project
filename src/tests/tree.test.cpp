@@ -20,7 +20,7 @@ void test_lukaword_computation()
 
 void test_exportation()
 {
-    BinaryDecisionTree tree(NTL::conv<NTL::ZZ>("38"), NTL::conv<NTL::ZZ>("8"));
+    BinaryDecisionTree tree(NTL::conv<NTL::ZZ>("63688"), NTL::conv<NTL::ZZ>("16"));
     tree.AdvencedCompression();
     tree.exportToDotFile("Test");
 }
