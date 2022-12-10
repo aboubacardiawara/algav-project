@@ -20,16 +20,12 @@ void BinaryDecisionTree::exportToDotFile(const string &filename)
     string toWrite;
     if (this->_dico.empty())
         toWrite = this->_root->toDotString();
-
-    else {
-        set<AbstractNode *> uniqueNodes;
-        for (RefDictionary::iterator it = _dico.begin(); it != _dico.end(); ++it) {
-            if (uniqueNodes.insert(it->second).second)
-                toWrite += it->second->toDotString(false);
-        }
-    }
+    else
+        for (auto it = this->_uniqueNodes.begin(); it != this->_uniqueNodes.end(); ++it)
+            toWrite += (*it)->toDotString(false);
 
     myfile << "digraph{\n" + toWrite + "\n}";
+    cout << "This tree has : " << getNbNodes() << " nodes" << endl;
     myfile.close();
 }
 
@@ -53,7 +49,7 @@ void BinaryDecisionTree::_buildTree(const vector<bool> &truthTable)
 {
     if (this->_root != NULL)
         delete this->_root;
-
+    this->_nbNodes = 0;
     this->_root = _buildTree_aux(truthTable);
     this->_root->calculateLukasWord();
 }
@@ -94,6 +90,7 @@ AbstractNode *BinaryDecisionTree::_buildTree_aux(const vector<bool> &truthTable)
     if (truthTable.size() == 1) {
         LeafNode *node = new LeafNode(truthTable[0]);
         node->setLabel(node->valueToString());
+        this->_nbNodes++;
         return node;
     }
 
@@ -106,17 +103,28 @@ AbstractNode *BinaryDecisionTree::_buildTree_aux(const vector<bool> &truthTable)
 
     AbstractNode *node = new InternalNode(_buildTree_aux(leftHalf), _buildTree_aux(rightHalf));
     node->setLabel("x" + to_string((unsigned long long)log2(truthTable.size())));
+    this->_nbNodes += 2;
     return node;
+}
+
+void BinaryDecisionTree::_resetNodeSet()
+{
+    this->_uniqueNodes.clear();
+    for (RefDictionary::iterator it = _dico.begin(); it != _dico.end(); ++it)
+        this->_uniqueNodes.insert(it->second);
+    this->_nbNodes = this->_uniqueNodes.size();
 }
 
 void BinaryDecisionTree::BasicCompression()
 {
     this->_root = this->_root->basicCompression(&_dico);
+    this->_resetNodeSet();
 }
 
 void BinaryDecisionTree::AdvencedCompression()
 {
     this->_root = this->_root->advencedCompression(&_dico);
+    this->_resetNodeSet();
 }
 
 BinaryDecisionTree::~BinaryDecisionTree()
@@ -125,10 +133,7 @@ BinaryDecisionTree::~BinaryDecisionTree()
     if (_dico.empty())
         delete this->_root;
     else {
-        set<AbstractNode *> ptrToFree;
-        for (RefDictionary::iterator it = _dico.begin(); it != _dico.end(); ++it) {
-            if (ptrToFree.insert(it->second).second)
-                free(it->second);
-        }
+        for (auto it = this->_uniqueNodes.begin(); it != this->_uniqueNodes.end(); ++it)
+            free(*it);
     }
 }
