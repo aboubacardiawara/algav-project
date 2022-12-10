@@ -33,4 +33,7 @@ private:
     void _buildTree(const int &number, const int &size);
     void _resetNodeSet();
     AbstractNode *_buildTree_aux(const vector<bool> &truthTable);
+    AbstractNode *_buildTree_aux(const vector<bool>::const_iterator &begin,
+                                 const vector<bool>::const_iterator &end,
+                                 const vector<bool>::size_type &size);
 };

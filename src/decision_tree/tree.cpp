@@ -87,22 +87,28 @@ void BinaryDecisionTree::_buildTree(const int &number, const int &size)
  */
 AbstractNode *BinaryDecisionTree::_buildTree_aux(const vector<bool> &truthTable)
 {
-    if (truthTable.size() == 1) {
-        LeafNode *node = new LeafNode(truthTable[0]);
+    return this->_buildTree_aux(truthTable.begin(), truthTable.end(), truthTable.size());
+}
+AbstractNode *BinaryDecisionTree::_buildTree_aux(const vector<bool>::const_iterator &begin,
+                                                 const vector<bool>::const_iterator &end,
+                                                 const vector<bool>::size_type &size)
+{
+    if (size == 1) {
+        LeafNode *node = new LeafNode(*begin);
         node->setLabel(node->valueToString());
         this->_nbNodes++;
         return node;
     }
 
-    size_t middle = truthTable.size() / 2;
-    vector<bool>::const_iterator middleIter = truthTable.cbegin();
-    advance(middleIter, middle);
+    vector<bool>::const_iterator middleIter = begin;
+    vector<bool>::size_type middle = size / 2;
+    for (vector<bool>::size_type i = middle; i > 0; i--)
+        middleIter++;
 
-    vector<bool> leftHalf(truthTable.begin(), middleIter);
-    vector<bool> rightHalf(middleIter, truthTable.end());
+    AbstractNode *node = new InternalNode(_buildTree_aux(begin, middleIter, middle),
+                                          _buildTree_aux(middleIter, end, middle));
 
-    AbstractNode *node = new InternalNode(_buildTree_aux(leftHalf), _buildTree_aux(rightHalf));
-    node->setLabel("x" + to_string((unsigned long long)log2(truthTable.size())));
+    node->setLabel("x" + to_string((unsigned long long)log2(middle) + 1));
     this->_nbNodes += 2;
     return node;
 }
