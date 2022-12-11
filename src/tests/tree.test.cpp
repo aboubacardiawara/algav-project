@@ -2,11 +2,14 @@
 #include <cassert>
 #include <chrono>
 #include <iostream>
+#include <iterator>
 #include <string>
 #include <thread>
 #include <fstream>
 #include <functional>
 #include <algorithm>
+#include <random>
+#include <unordered_set>
 
 #define NB_THREADS 8
 
@@ -34,33 +37,55 @@ void test_exportation()
     tree.exportToDotFile("Test");
 }
 
-long long parallel_for(NTL::ZZ nb_elements,
-                       std::function<void(const NTL::ZZ &start, const NTL::ZZ &end)> functor)
+long long parallel_for(NTL::ZZ nb_elements, function<void(const NTL::ZZ &start, const NTL::ZZ &end)> functor)
 {
-    auto chronoStart = std::chrono::high_resolution_clock::now();
+    auto chronoStart = chrono::high_resolution_clock::now();
     NTL::ZZ batch_size = nb_elements / NB_THREADS;
     NTL::ZZ batch_remainder = nb_elements % NTL::ZZ(NB_THREADS);
-    std::vector<std::thread> my_threads(NB_THREADS);
+    vector<thread> my_threads(NB_THREADS);
     NTL::ZZ start, end;
 
     for (unsigned i = 0; i < NB_THREADS; ++i) {
         start = i * batch_size;
         end = start + batch_size;
-        my_threads[i] = std::thread(functor, start, end);
+        my_threads[i] = thread(functor, start, end);
     }
 
     start = NB_THREADS * batch_size;
     end = start + batch_remainder;
     functor(start, end);
-    std::for_each(my_threads.begin(), my_threads.end(), std::mem_fn(&std::thread::join));
+    for_each(my_threads.begin(), my_threads.end(), mem_fn(&thread::join));
 
-    auto elapsedTime = std::chrono::duration_cast<std::chrono::nanoseconds>(
-                               std::chrono::high_resolution_clock::now() - chronoStart)
-                               .count();
+    auto elapsedTime =
+            chrono::duration_cast<chrono::nanoseconds>(chrono::high_resolution_clock::now() - chronoStart)
+                    .count();
     return elapsedTime;
 }
 
-void test_extensive_test(int nbVariable)
+void writeResults(const int &nbVariable, const NTL::ZZ &nbPossibilities,
+                  const unordered_map<unsigned int, NTL::ZZ *> &treeSizes, const float &calculationTime)
+{
+    ofstream myfile;
+    string path = "Visualisation/ExaustiveTestResults/Variable" + to_string(nbVariable) + ".txt";
+    myfile.open(path, ios::out | ios::trunc | ios::binary);
+
+    myfile << "NbVariable: " << nbVariable << endl;
+    myfile << "Number of Tree: " << nbPossibilities << endl;
+    myfile << "Found values: " << treeSizes.size() << endl;
+    myfile << fixed << "Total Calculations Took: " << (double)calculationTime / pow(10, 9) << " seconds"
+           << endl;
+    myfile << fixed << "Took: " << NTL::conv<double>(NTL::ZZ(calculationTime) / nbPossibilities) / pow(10, 9)
+           << " seconds per Tree" << endl;
+
+    for (auto it = treeSizes.begin(); it != treeSizes.end(); it++) {
+        myfile << "Nb Boolean Functions: " << *it->second << endl;
+        myfile << "Nb Nodes: " << it->first << endl;
+        delete it->second;
+    }
+    myfile.close();
+}
+
+void test_extensive(unsigned int nbVariable)
 {
     int treeSize = pow(2, nbVariable);
     NTL::ZZ nbPossibilities = NTL::power2_ZZ(treeSize);
@@ -68,7 +93,7 @@ void test_extensive_test(int nbVariable)
     float calculationTime =
             parallel_for(nbPossibilities, [&treeSize, &treeSizes](const NTL::ZZ &s, const NTL::ZZ &e) {
                 unordered_map<unsigned int, NTL::ZZ *> asyncSizeMap;
-                std::unordered_map<unsigned int, NTL::ZZ *>::iterator result;
+                unordered_map<unsigned int, NTL::ZZ *>::iterator result;
                 int nbTreeNodes;
 
                 for (NTL::ZZ i = s; i < e; i++) {
@@ -91,30 +116,68 @@ void test_extensive_test(int nbVariable)
                 }
             });
 
-    ofstream myfile;
-    string path = "Visualisation/ExaustiveTestResults/Variable" + to_string(nbVariable) + ".txt";
-    myfile.open(path, ios::out | ios::trunc | ios::binary);
+    writeResults(nbVariable, nbPossibilities, treeSizes, calculationTime);
+}
 
-    myfile << "NbVariable: " << nbVariable << endl;
-    myfile << "Number of Tree: " << nbPossibilities << endl;
-    myfile << "Found values: " << treeSizes.size() << endl;
-    myfile << fixed << "Total Calculations Took: " << (double)calculationTime / pow(10, 9) << " seconds"
-           << endl;
-    myfile << fixed << "Took: " << NTL::conv<double>(NTL::ZZ(calculationTime) / nbPossibilities) / pow(10, 9)
-           << " seconds per Tree" << endl;
-
-    for (auto it = treeSizes.begin(); it != treeSizes.end(); it++) {
-        myfile << "Nb Boolean Functions: " << *it->second << endl;
-        myfile << "Nb Nodes: " << it->first << endl;
+vector<NTL::ZZ> pick(unsigned int nbBitMax, NTL::ZZ k)
+{
+    random_device rd;
+    mt19937 gen(rd());
+    unordered_set<NTL::ZZ *> elems;
+    while (elems.size() < k)
+        elems.insert(new NTL::ZZ(NTL::RandomBits_ZZ(nbBitMax)));
+    vector<NTL::ZZ> result;
+    for (auto it = elems.begin(); it != elems.end(); it++) {
+        result.push_back(**it);
+        free(*it);
     }
-    myfile.close();
+    shuffle(result.begin(), result.end(), gen);
+    return result;
+}
+
+void test_sampling(unsigned int nbVariable, unsigned int nbSamples)
+{
+    int treeSize = pow(2, nbVariable);
+    NTL::ZZ nbPossibilities = NTL::ZZ(nbSamples);
+    cout << "nbPossibilities: " << nbPossibilities << endl;
+    unordered_map<unsigned int, NTL::ZZ *> treeSizes;
+    unordered_map<unsigned int, NTL::ZZ *>::iterator result;
+    vector<NTL::ZZ> vec = pick(treeSize, nbPossibilities);
+    int nbTreeNodes;
+
+    auto chronoStart = chrono::high_resolution_clock::now();
+    cout << "Computing Samples" << endl;
+    for (vector<NTL::ZZ>::iterator it = vec.begin(); it != vec.end(); it++) {
+        BinaryDecisionTree tree(*it, NTL::ZZ(treeSize));
+        tree.AdvencedCompression();
+        nbTreeNodes = NTL::conv<int>(tree.getNbNodes());
+        result = treeSizes.find(nbTreeNodes);
+        if (result == treeSizes.end())
+            treeSizes.insert({ nbTreeNodes, new NTL::ZZ(1) });
+        else
+            (*result->second)++;
+    }
+
+    writeResults(
+            nbVariable, nbPossibilities, treeSizes,
+            chrono::duration_cast<chrono::nanoseconds>(chrono::high_resolution_clock::now() - chronoStart)
+                    .count());
 }
 
 int main(int argc, char **argv)
 {
     test_lukaword_computation();
     for (size_t i = 1; i <= 4; i++)
-        test_extensive_test(i);
+        test_extensive(i);
+
+    // test_extensive(5);
+
+    test_sampling(5, 500003);
+    test_sampling(6, 400003);
+    test_sampling(7, 486892);
+    test_sampling(8, 56343);
+    test_sampling(9, 94999);
+    test_sampling(10, 17975);
 
     if (argc > 1) {
         BinaryDecisionTree tree(argv[1]);

@@ -34,9 +34,9 @@ const string InternalNode::toDotString(const bool &recursiveCall)
  */
 const string AbstractNode::stringOfAddr() const
 {
-    std::ostringstream address;
+    ostringstream address;
     address << (void const *)this;
-    std::string strPtr = address.str();
+    string strPtr = address.str();
     return "Ptr" + strPtr;
 }
 

@@ -9,7 +9,7 @@
 using namespace std;
 
 class AbstractNode;
-typedef std::unordered_map<std::string, AbstractNode *> RefDictionary;
+typedef unordered_map<string, AbstractNode *> RefDictionary;
 
 class AbstractNode
 {

@@ -11,7 +11,7 @@ using namespace std;
 void display_vector(const vector<bool> &v)
 {
     cout << "[ ";
-    std::copy(v.begin(), v.end(), std::ostream_iterator<bool>(std::cout, " "));
+    copy(v.begin(), v.end(), ostream_iterator<bool>(cout, " "));
     cout << "]";
 }
 
