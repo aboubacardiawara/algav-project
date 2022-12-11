@@ -29,6 +29,7 @@ public:
     virtual const string toDotString(const bool &recusiveCall = true);
     virtual AbstractNode *basicCompression(RefDictionary *const hashMap);
     virtual AbstractNode *advencedCompression(RefDictionary *const hashMap);
+    virtual AbstractNode *fusion(AbstractNode *node);
 };
 
 class LeafNode : public AbstractNode
@@ -44,6 +45,7 @@ public:
     const string valueToString() const;
     const string toDotString(const bool &recursiveCall = true) override;
     const string &calculateLukasWord() override;
+    AbstractNode *fusion(AbstractNode *node) override;
 
 private:
     //? - PrivateHelpers Funcs
@@ -62,6 +64,7 @@ public:
     const string &calculateLukasWord() override;
     AbstractNode *basicCompression(RefDictionary *const hashMap) override;
     AbstractNode *advencedCompression(RefDictionary *const hashMap) override;
+    AbstractNode *fusion(AbstractNode *node) oveeride;
 
 private:
     //? - PrivateHelpers Funcs
