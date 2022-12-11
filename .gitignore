@@ -3,7 +3,7 @@ src/arithmetic_lib
 library/ntl-11.5.1
 *.dot
 *.jpg
-Visualization/*
+*.txt
 
 # Prerequisites
 *.d

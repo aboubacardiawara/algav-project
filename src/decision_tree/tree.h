@@ -15,6 +15,7 @@ private:
     NTL::ZZ _nbNodes = NTL::ZZ::zero();
 
 public:
+    BinaryDecisionTree(const string &arbitraryNumber) { this->_buildTree(arbitraryNumber); }
     BinaryDecisionTree(const vector<bool> &truthTable) { this->_buildTree(truthTable); }
     BinaryDecisionTree(const NTL::ZZ &number, const NTL::ZZ &size) { this->_buildTree(number, size); }
     BinaryDecisionTree(const int &number, const int &size) { this->_buildTree(number, size); }
@@ -28,6 +29,7 @@ public:
     const NTL::ZZ &getNbNodes() const { return this->_nbNodes; }
 
 private:
+    void _buildTree(const string &arbitraryNumber);
     void _buildTree(const vector<bool> &truthTable);
     void _buildTree(const NTL::ZZ &number, const NTL::ZZ &size);
     void _buildTree(const int &number, const int &size);

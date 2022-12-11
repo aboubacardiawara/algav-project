@@ -4,7 +4,7 @@ main:
 
 CC=g++
 LIBS = -Isrc/arithmetic_lib/include/NTL -Lsrc/arithmetic_lib/lib
-FLAGS = -std=c++11 $(LIBS) -lntl -Wall -Ofast -funroll-loops -finline-functions
+FLAGS = -std=c++11 $(LIBS) -lntl -Wall -Ofast -funroll-loops -finline-functions -pthread
 
 warming_up:
 	make warming_up.out

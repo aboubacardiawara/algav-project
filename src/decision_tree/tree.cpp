@@ -54,7 +54,7 @@ void BinaryDecisionTree::_buildTree(const vector<bool> &truthTable)
     for (auto it = this->_uniqueNodes.begin(); it != this->_uniqueNodes.end(); ++it)
         delete (*it);
     this->_uniqueNodes.clear();
-    
+
     this->_nbNodes = 0;
     this->_root = _buildTree_aux(truthTable);
     this->_root->calculateLukasWord();
@@ -69,6 +69,15 @@ void BinaryDecisionTree::_buildTree(const vector<bool> &truthTable)
 void BinaryDecisionTree::_buildTree(const NTL::ZZ &number, const NTL::ZZ &size)
 {
     _buildTree(table(number, size));
+}
+
+void BinaryDecisionTree::_buildTree(const string &arbitraryNumber)
+{
+    NTL::ZZ n = NTL::conv<NTL::ZZ>(arbitraryNumber.c_str());
+    vector<bool> t = decomposition(n);
+
+    float i = log2(t.size());
+    return _buildTree(n, NTL::power2_ZZ(ceil(i)));
 }
 
 /**

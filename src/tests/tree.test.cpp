@@ -5,6 +5,8 @@
 #include <string>
 #include <thread>
 #include <fstream>
+#include <functional>
+#include <algorithm>
 
 #define NB_THREADS 8
 
@@ -108,10 +110,19 @@ void test_extensive_test(int nbVariable)
     myfile.close();
 }
 
-int main()
+int main(int argc, char **argv)
 {
+    test_lukaword_computation();
     for (size_t i = 1; i <= 4; i++)
         test_extensive_test(i);
+
+    if (argc > 1) {
+        BinaryDecisionTree tree(argv[1]);
+        string filename = string("Demo") + argv[1];
+        tree.exportToDotFile(filename);
+        tree.AdvencedCompression();
+        tree.exportToDotFile(filename + "_comp");
+    }
 
     return 0;
 }
