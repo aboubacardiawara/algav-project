@@ -1,4 +1,5 @@
 #include "treeClasses.h"
+#include<stdlib.h> 
 
 /**
  * It returns a string that represents the node in the DOT language
@@ -219,13 +220,27 @@ const string &InternalNode::calculateLukasWord()
 
 AbstractNode *InternalNode::fusion(AbstractNode *node)
 {
-    InternalNode *newNode;
+    InternalNode *newNode = (InternalNode*) malloc(sizeof(InternalNode));
     if (this->_label < node->getLabel()) {
-        
+        newNode = new InternalNode(
+            this->_left->fusion(node), 
+            this->_right->fusion(node)
+        );
+        newNode->setLabel(this->_label);
+        return newNode;
     } else if (this->_label > node->getLabel()) {
-
+        newNode = new InternalNode(
+            ((InternalNode*) node)->_left->fusion(this), 
+            ((InternalNode*) node)->_right->fusion(this)
+        );
+        newNode->setLabel(node->_label);
+        return newNode;
     } else {
-
+        newNode = new InternalNode(
+            this->_left->fusion(((InternalNode*) node)->_left), 
+            ((InternalNode*) node)->_right->fusion(((InternalNode*) node)->_right)
+        );
+        newNode->setLabel(this->_label);
+        return newNode;
     }
-    return newNode;
 }

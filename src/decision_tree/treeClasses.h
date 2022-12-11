@@ -64,7 +64,7 @@ public:
     const string &calculateLukasWord() override;
     AbstractNode *basicCompression(RefDictionary *const hashMap) override;
     AbstractNode *advencedCompression(RefDictionary *const hashMap) override;
-    AbstractNode *fusion(AbstractNode *node) oveeride;
+    AbstractNode *fusion(AbstractNode *node) override;
 
 private:
     //? - PrivateHelpers Funcs
