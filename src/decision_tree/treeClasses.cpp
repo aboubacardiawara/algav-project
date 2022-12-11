@@ -177,6 +177,14 @@ const string &LeafNode::calculateLukasWord()
     return setLukasWord(valueToString());
 }
 
+AbstractNode *LeafNode::fusion(AbstractNode *node)
+{
+    if (this->_value) {
+        return node;
+    }
+    return this;
+}
+
 /**
  * This function creates a new internal node with the given left and right children.
  *
@@ -206,4 +214,18 @@ const string &InternalNode::calculateLukasWord()
 {
     return setLukasWord(getLabel() + "(" + _left->calculateLukasWord() + ")" + "("
                         + _right->calculateLukasWord() + ")");
+}
+
+
+AbstractNode *InternalNode::fusion(AbstractNode *node)
+{
+    InternalNode *newNode;
+    if (this->_label < node->getLabel()) {
+        
+    } else if (this->_label > node->getLabel()) {
+
+    } else {
+
+    }
+    return newNode;
 }
