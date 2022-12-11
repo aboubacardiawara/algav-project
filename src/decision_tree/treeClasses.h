@@ -13,11 +13,10 @@ typedef std::unordered_map<std::string, AbstractNode *> RefDictionary;
 
 class AbstractNode
 {
-private:
+public:
     string _LukasWord = "";
     string _label = "";
 
-public:
     AbstractNode() { }
     virtual ~AbstractNode() { }
     const string &getLukasWord() const;
@@ -39,7 +38,7 @@ private:
 
 public:
     LeafNode(bool value);
-    ~LeafNode() override { }
+    ~LeafNode() override;
     const bool &getValue() const;
     void setValue(const bool &value);
     const string valueToString() const;

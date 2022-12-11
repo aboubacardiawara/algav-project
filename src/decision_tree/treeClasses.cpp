@@ -75,7 +75,7 @@ AbstractNode *AbstractNode::basicCompression(RefDictionary *const hashMap)
     RefDictionary::iterator sameNode = hashMap->find(getLukasWord());
     if (sameNode != hashMap->end()) {
         if (this != sameNode->second) {
-            free(this);
+            delete this;
         }
         return sameNode->second;
     }
@@ -111,7 +111,7 @@ AbstractNode *InternalNode::advencedCompression(RefDictionary *const hashMap)
     AbstractNode *leftResult = this->_left->advencedCompression(hashMap);
 
     if (leftResult == rightResult) { /* Deletion Rule */
-        free(this);
+        delete this;
         return leftResult;
     }
 
@@ -192,11 +192,9 @@ InternalNode::InternalNode(AbstractNode *left, AbstractNode *right)
 /**
  * Delete the left and right children of this node.
  */
-InternalNode::~InternalNode()
-{
-    delete this->_left;
-    delete this->_right;
-}
+InternalNode::~InternalNode() { }
+
+LeafNode::~LeafNode() { }
 
 /**
  * The Lukasiewicz word of an internal node is the concatenation of the Lukasiewicz words of its

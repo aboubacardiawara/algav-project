@@ -14,7 +14,7 @@
  */
 void BinaryDecisionTree::exportToDotFile(const string &filename)
 {
-    const string path = "visualisation/" + filename;
+    const string path = "Visualisation/" + filename;
     assert(this->_root != NULL);
     ofstream myfile;
     myfile.open(path + ".dot", ios::out | ios::trunc | ios::binary);
@@ -51,8 +51,10 @@ const string &BinaryDecisionTree::getLukasWord()
  */
 void BinaryDecisionTree::_buildTree(const vector<bool> &truthTable)
 {
-    if (this->_root != NULL)
-        delete this->_root;
+    for (auto it = this->_uniqueNodes.begin(); it != this->_uniqueNodes.end(); ++it)
+        delete (*it);
+    this->_uniqueNodes.clear();
+    
     this->_nbNodes = 0;
     this->_root = _buildTree_aux(truthTable);
     this->_root->calculateLukasWord();
@@ -101,6 +103,7 @@ AbstractNode *BinaryDecisionTree::_buildTree_aux(const vector<bool>::const_itera
         LeafNode *node = new LeafNode(*begin);
         node->setLabel(node->valueToString());
         this->_nbNodes++;
+        this->_uniqueNodes.insert(node);
         return node;
     }
 
@@ -114,6 +117,7 @@ AbstractNode *BinaryDecisionTree::_buildTree_aux(const vector<bool>::const_itera
 
     node->setLabel("x" + to_string((unsigned long long)log2(middle) + 1));
     this->_nbNodes += 2;
+    this->_uniqueNodes.insert(node);
     return node;
 }
 
@@ -140,10 +144,6 @@ void BinaryDecisionTree::AdvencedCompression()
 BinaryDecisionTree::~BinaryDecisionTree()
 {
 
-    if (_dico.empty())
-        delete this->_root;
-    else {
-        for (auto it = this->_uniqueNodes.begin(); it != this->_uniqueNodes.end(); ++it)
-            free(*it);
-    }
+    for (auto it = this->_uniqueNodes.begin(); it != this->_uniqueNodes.end(); ++it)
+        delete (*it);
 }
