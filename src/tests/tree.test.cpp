@@ -13,6 +13,9 @@
 
 #define NB_THREADS 8
 
+/**
+ * It tests the computation of the Lukasiewicz word for a binary decision tree
+ */
 void test_lukaword_computation()
 {
     BinaryDecisionTree tree(38, 8);
@@ -30,6 +33,9 @@ void test_lukaword_computation()
     assert(tree2.getLukasWord() != expected_luka_word && "test luka for table of 2");
 }
 
+/**
+ * It creates a binary decision tree, compresses it, and then exports it to a dot file
+ */
 void test_exportation()
 {
     BinaryDecisionTree tree(NTL::conv<NTL::ZZ>("63688"), NTL::conv<NTL::ZZ>("16"));
@@ -37,6 +43,16 @@ void test_exportation()
     tree.exportToDotFile("Test");
 }
 
+/**
+ * It takes a number of elements to process, and a functor, and it splits the work into batches of
+ * equal size, and then it calls the functor on each batch in a separed thread
+ *
+ * @param nb_elements the number of elements to be processed
+ * @param functor the function to apply
+ * @param start the index of the first batch element
+ * @param end the index of the last batch element
+ * @return The time it took to execute the function.
+ */
 long long parallel_for(NTL::ZZ nb_elements, function<void(const NTL::ZZ &start, const NTL::ZZ &end)> functor)
 {
     auto chronoStart = chrono::high_resolution_clock::now();
@@ -62,6 +78,15 @@ long long parallel_for(NTL::ZZ nb_elements, function<void(const NTL::ZZ &start, 
     return elapsedTime;
 }
 
+/**
+ * It writes the results of the test to a file
+ *
+ * @param nbVariable The number of variables in the boolean function.
+ * @param nbPossibilities The number of possible trees.
+ * @param treeSizes A map of the number of nodes in the tree to the number of boolean functions that
+ * can be created with that number of nodes.
+ * @param calculationTime The time it took to calculate all the trees.
+ */
 void writeResults(const int &nbVariable, const NTL::ZZ &nbPossibilities,
                   const unordered_map<unsigned int, NTL::ZZ *> &treeSizes, const float &calculationTime)
 {
@@ -85,6 +110,11 @@ void writeResults(const int &nbVariable, const NTL::ZZ &nbPossibilities,
     myfile.close();
 }
 
+/**
+ * It computes every tree possible of a given variable number
+ *
+ * @param nbVariable The number of variables in the tree.
+ */
 void test_extensive(unsigned int nbVariable)
 {
     int treeSize = pow(2, nbVariable);
@@ -119,6 +149,15 @@ void test_extensive(unsigned int nbVariable)
     writeResults(nbVariable, nbPossibilities, treeSizes, calculationTime);
 }
 
+/**
+ * It generates a random number of nbBitMax bits, and then returns a vector of k random numbers of
+ * nbBitMax bits
+ *
+ * @param nbBitMax the maximum number of bits for the random numbers
+ * @param k the number of elements to pick
+ *
+ * @return A vector of ZZ numbers.
+ */
 vector<NTL::ZZ> pick(unsigned int nbBitMax, NTL::ZZ k)
 {
     random_device rd;
@@ -135,6 +174,13 @@ vector<NTL::ZZ> pick(unsigned int nbBitMax, NTL::ZZ k)
     return result;
 }
 
+/**
+ * It computes the number of samples of a given size, and then computes the number of nodes of the
+ * compressed tree for each sample
+ *
+ * @param nbVariable the number of variables in the decision tree
+ * @param nbSamples the number of samples to generate
+ */
 void test_sampling(unsigned int nbVariable, unsigned int nbSamples)
 {
     int treeSize = pow(2, nbVariable);
@@ -164,9 +210,11 @@ void test_sampling(unsigned int nbVariable, unsigned int nbSamples)
                     .count());
 }
 
-int main(int argc, char **argv)
+/**
+ * It generates the data for the figures in the paper
+ */
+void generate_figures_data()
 {
-    test_lukaword_computation();
     for (size_t i = 1; i <= 4; i++)
         test_extensive(i);
 
@@ -178,6 +226,12 @@ int main(int argc, char **argv)
     test_sampling(8, 56343);
     test_sampling(9, 94999);
     test_sampling(10, 17975);
+}
+
+int main(int argc, char **argv)
+{
+    /* generate_figures_data(); */
+    test_lukaword_computation();
 
     if (argc > 1) {
         BinaryDecisionTree tree(argv[1]);
