@@ -1,16 +1,26 @@
 # Algav-project (M1-2022-2023)
 Le but du problème consiste à générer des diagrammes de décision binaires, réduits et ordonnés avec une approche analogue à celle présentée dans l’article de Newton et Verna [A Theoretical and Numerical Analysis of the Worst-Case Size of Reduced Ordered Binary Decision Diagrams](https://hal.archives-ouvertes.fr/hal-01880774/document).
 
-# Authors
-to do
+## Structure du repository
 
-...
+### Helpers :
+- [Figures/](Figures/): Contient toutes les figures générée dans le cadre du projet
+- [library/](library/) : Contient le code source de librairie de nombre arbitraire utilisée et un script bash d'installation rapide vérifier et tester Linux/MacOs/MacM1
+- [Visualisation/](Visualisation/) : A la suite des tests les resultats et images .dot sont générée ici.
 
-# 2. Usage
-## 2.1 Compile
+### Code Source :
+- [src/arithmetic_lib/](src/arithmetic_lib/) : Code compilé en natif de la librairie arithmetique
+- [src/decision_tree/](src/decision_tree/) : Fichier source des arbres ROBDD
+- [src/tests/](src/tests/) : Fichier source des tests du projets
+- [src/warming_up/](src/warming_up/) : Fichier source de la premiere partie de l'enoncée 
+
+## Usage
 At the root of the project, execute:
 ```sh
-algav-project$ make
+  bash ./library/quick_install.sh #1
+  make && ./warming_up.test.out #2
+  make && ./tree.test.out 38 #3
+  #Genere un arbre basé sur table de verité de 38 avec le nombre minimal de variables
 ```
 ## TODO
 
@@ -18,6 +28,6 @@ algav-project$ make
 - [ ] Using String_Linked_List (with cache) instad of concatenation (For .dot conversion and lukas building)
 
 # Utiles
-- [ecnonce (moodle)](https://moodle-sciences-22.sorbonne-universite.fr/pluginfile.php/463253/mod_resource/content/1/devoir_prog_AlgAv.pdf)
+- [Enoncé Projet](devoir_prog_AlgAv.pdf)
 
 
