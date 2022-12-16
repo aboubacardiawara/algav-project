@@ -5,14 +5,14 @@ Le but du problème consiste à générer des diagrammes de décision binaires, 
 
 ### Helpers :
 - [Figures/](Figures/): Contient toutes les figures générée dans le cadre du projet
-- [library/](library/) : Contient le code source de librairie de nombre arbitraire utilisée et un script bash d'installation rapide vérifier et tester Linux/MacOs/MacM1
-- [Visualisation/](Visualisation/) : A la suite des tests les resultats et images .dot sont générée ici.
+- [library/](library/) : Contient le code source de la librairie de nombre arbitraire utilisée et un script bash d'installation rapide vérifier et tester Linux/MacOs/MacM1
+- [Visualisation/](Visualisation/) : A la suite des tests les resultats et images .dot sont générées ici.
 
 ### Code Source :
 - [src/arithmetic_lib/](src/arithmetic_lib/) : Code compilé en natif de la librairie arithmetique
-- [src/decision_tree/](src/decision_tree/) : Fichier source des arbres ROBDD
-- [src/tests/](src/tests/) : Fichier source des tests du projets
-- [src/warming_up/](src/warming_up/) : Fichier source de la premiere partie de l'enoncée 
+- [src/decision_tree/](src/decision_tree/) : Fichiers sources des arbres ROBDD
+- [src/tests/](src/tests/) : Fichiers sources des tests du projets
+- [src/warming_up/](src/warming_up/) : Fichiers sources de la premiere partie de l'enoncée 
 
 ## Usage
 At the root of the project, execute:
