@@ -1,5 +1,4 @@
 import matplotlib.pyplot as plt
-from matplotlib.ticker import StrMethodFormatter
 
 import numpy as np
 import os
@@ -46,6 +45,6 @@ def generateFigure(nbVar, YnbFunction, XnodeCount):
 testDirFiles = os.listdir(currentDir +
                           "/../Visualisation/ExaustiveTestResults")
 testDirFiles = [
-    currentDir+"/../Visualisation/ExaustiveTestResults/" + elm for elm in testDirFiles]
+    currentDir+"/../Visualisation/ExaustiveTestResults/" + elm for elm in testDirFiles if elm.endswith(".txt")]
 for file in testDirFiles:
     parse_file(file)

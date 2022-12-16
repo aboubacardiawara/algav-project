@@ -28,10 +28,13 @@ else
     rm -rf $LibLocation
 
     if sed -i 's/NTL/./g' $InstallTarget/include/NTL/ALL_FEATURES.h; then
-        echo "Everything is installed"
+        sed -i 's/</"/g' $InstallTarget/include/NTL/ALL_FEATURES.h
+        sed -i 's/>/"/g' $InstallTarget/include/NTL/ALL_FEATURES.h
     else
         echo "Using gsed"
         gsed -i 's/NTL/./g' $InstallTarget/include/NTL/ALL_FEATURES.h
-        echo "Everything is installed"
+        gsed -i 's/</"/g' $InstallTarget/include/NTL/ALL_FEATURES.h
+        gsed -i 's/>/"/g' $InstallTarget/include/NTL/ALL_FEATURES.h
     fi
+       echo "Everything is installed"
 fi

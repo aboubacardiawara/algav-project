@@ -220,12 +220,12 @@ void generate_figures_data()
 
     // test_extensive(5);
 
-    test_sampling(5, 500003);
-    test_sampling(6, 400003);
-    test_sampling(7, 486892);
-    test_sampling(8, 56343);
-    test_sampling(9, 94999);
-    test_sampling(10, 17975);
+    test_sampling(5, 500003 * 10);
+    test_sampling(6, 400003 * 10);
+    test_sampling(7, 486892 * 10);
+    test_sampling(8, 56343 * 10);
+    test_sampling(9, 94999 * 10);
+    test_sampling(10, 17975 * 10);
 }
 
 int main(int argc, char **argv)
